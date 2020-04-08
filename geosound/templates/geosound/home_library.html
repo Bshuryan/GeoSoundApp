@@ -10,7 +10,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" 
         crossorigin="anonymous">
     </script>
-    <title>GeoSound - Playlist Creation</title>
+    <title>GeoSound - Library</title>
 </head>
 
 <body>
@@ -21,14 +21,14 @@
               <a class="nav-link" href="{% url 'geosounds' %}">GeoSound</a>
             </li> 
             </li> 
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'home-library' %}">Library<span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item active">
+              <a class="nav-link" href="">Library<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'select-playlist-to-display' %}">Playlists</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'search' %}">Search</a>
+              <a class="nav-link" href="{% url 'search' %}" >Search</a>
             </li>
             <!--<li class="nav-item">
               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -37,20 +37,34 @@
         </div>
       </nav>
     </br>
-    <center><h1>Playlist Creation</h1></center>
-
+    <center><h1>Library</h1></center>
 </br>
-<div class="container">
-    <form>
-        <div class="form-group">
-          
-          <input type="text" class="form-control" id="playlistName" placeholder="Playlist Name">
-        </div>
-      
-        <center><button type = "button" class="btn btn-primary btn-lg">Create Playlist</button></center>
-        <br/>
-        
-      </form>
-</div>
+<div style="height:500px;overflow-y:auto;">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Title</th>
+            <th scope="col">Artist</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Length</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+                {% for song in song_list %}
+                    <tr>
+                        <th scope="row"><button type = "button" class="btn btn-primary btn-xs">Play</button></th>
+                        <td>{{ song.song_name }} </td>
+                        <td>{{ song.song_artist }}</td>
+                        <td>{{song.song_genre}}</td>
+                        <td>{{song.song_duration}}</td>
+                        <td><button type = "button" class="btn btn-primary btn-xs">Add</button></td>
+                    </tr>
+                {% endfor %}
+
+        </tbody>
+      </table> 
+    </div>
 </body>
 </html>

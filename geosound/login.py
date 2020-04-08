@@ -2,6 +2,8 @@ from geosound.models import User
 from geosound.models import Location
 from geosound.models import City
 
+from django.shortcuts import redirect
+
 
 # returns a valid city_id if the city passes, -1 if no valid city is found
 def validate_location(city, state, zip_code):
@@ -32,6 +34,8 @@ def validate_user(email, password):
         return user_obj.user_id
     else:
         return -1
+
+
 
 
 

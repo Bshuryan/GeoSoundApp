@@ -10,7 +10,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" 
         crossorigin="anonymous">
     </script>
-    <title>GeoSound - Playlist Creation</title>
+    <title>GeoSound - Select Playlist</title>
 </head>
 
 <body>
@@ -25,7 +25,7 @@
               <a class="nav-link" href="{% url 'home-library' %}">Library<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'select-playlist-to-display' %}">Playlists</a>
+              <a class="nav-link" href="">Playlists</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'search' %}">Search</a>
@@ -37,20 +37,28 @@
         </div>
       </nav>
     </br>
-    <center><h1>Playlist Creation</h1></center>
-
+    <center><h1>Select a Playlist</h1></center>
+    <center><button type = "button" class="btn btn-primary btn-lg">Create New Playlist</button></center>
 </br>
-<div class="container">
-    <form>
-        <div class="form-group">
-          
-          <input type="text" class="form-control" id="playlistName" placeholder="Playlist Name">
-        </div>
-      
-        <center><button type = "button" class="btn btn-primary btn-lg">Create Playlist</button></center>
-        <br/>
-        
-      </form>
-</div>
+<div style="height:500px;overflow-y:auto;">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Playlist Name</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for p_id, playlist_name in usr_playlists.items %}
+                 <tr>
+                 <th scope="row"><button type = "button" class="btn btn-primary btn-xs">Select</button></th>
+                 <td>{{playlist_name}}</td>
+                 <td><button type = "button" class="btn btn-danger btn-xs">Delete</button></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table> 
+    </div>
 </body>
 </html>

@@ -5,15 +5,11 @@ from geosound.models import User
 
 
 # returns a list with all songs available
+
+
 def get_lib():
-    cursor = connection.cursor()
-    try:
-        cursor.execute("call show_all_songs()")
-        songs = list(cursor.fetchall())
-        songs_list = [list(song) for song in songs]
-        return songs_list
-    finally:
-        cursor.close()
+    queryset = Song.objects.all()
+    return queryset
 
 
 def show_geosounds(usr_id):
@@ -22,7 +18,8 @@ def show_geosounds(usr_id):
         cursor.callproc('show_geosounds', [usr_id])
         songs = cursor.fetchall()
         songs_list = [list(song) for song in songs]
-        return songs_list
+        obj_lst = song_to_obj(songs_list)
+        return obj_lst
     finally:
         cursor.close()
 
@@ -39,9 +36,8 @@ def search_library(user_search):
     filtered_songs = []
 
     for instance in entire_lib:
-        if user_search.lower() in instance[1].lower() or user_search.lower() in instance[2].lower():
+        if user_search.lower() in instance.song_name.lower() or user_search.lower() in instance.song_artist.lower():
             filtered_songs.append(instance)
-
     return filtered_songs
 
 
@@ -51,6 +47,22 @@ def show_songs_in_playlist(playlist_id):
         cursor.callproc('show_songs_in_playlist', [playlist_id])
         songs = cursor.fetchall()
         songs_list = [list(song) for song in songs]
-        return songs_list
+        obj_list = song_to_obj(songs_list)
+        return obj_list
     finally:
         cursor.close()
+
+
+def song_to_obj(song_lst):
+    obj_list = []
+    for s in song_lst:
+        s_id = s[0]
+        song_match = Song.objects.get(song_id__exact=s_id)
+        obj_list.append(song_match)
+    return obj_list
+
+
+def sec_to_mins(seconds):
+    minutes = str(int(seconds/60))
+    remainder = str(seconds % 60)
+    return minutes + ':' + remainder
