@@ -27,7 +27,7 @@ SECRET_KEY = '_o=sb(jir+geg5c9=6ix(a4o0@=z5n9ric!&*1v88(=cn7$*#3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["192.168.1.86", 'localhost', '127.0.0.1', '172.20.10.4', '10.0.0.20']
 
 
 # Application definition
@@ -80,9 +80,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'GeoSound',  # give you DB name
-        'USER': 'root',
-        'PASSWORD': "Buddy8947",  # give your db password
+        'USER': 'bshuryan',
+        'PASSWORD': "password123",  # give your db password
         'HOST': "localhost",
+        # 'HOST': "172.20.10.4",
         'PORT': "3306",
         'OPTIONS': {
             'init_command': "SET sql_mode = 'STRICT_TRANS_TABLES'"
