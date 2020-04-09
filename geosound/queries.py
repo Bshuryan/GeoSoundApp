@@ -24,6 +24,14 @@ def show_geosounds(usr_id):
         cursor.close()
 
 
+def play_song(song_id, user_id):
+    cursor = connection.cursor()
+    try:
+        cursor.callproc('play', [song_id, user_id])
+    finally:
+        cursor.close()
+
+
 # returns all playlists associated with the given user id
 def get_playlists(usr_id):
     current_user = User.objects.get(user_id=usr_id)
@@ -49,6 +57,15 @@ def show_songs_in_playlist(playlist_id):
         songs_list = [list(song) for song in songs]
         obj_list = song_to_obj(songs_list)
         return obj_list
+    finally:
+        cursor.close()
+
+
+# get user_id from request.session['user_id']
+def create_playlist(user_id, playlist_name):
+    cursor = connection.cursor()
+    try:
+        cursor.callproc('create_playlist', [user_id, playlist_name])
     finally:
         cursor.close()
 

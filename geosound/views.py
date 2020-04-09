@@ -23,7 +23,7 @@ def login_view(request):
 def home_library_view(request):
     # returning user logging in - validate email and password
     if request.session['returning_usr'] == 1:
-        user_email = 'dummy@gmail.com'
+        user_email = 'dummy2@gmail.com'
         user_password = 'password'
         # *** GET EMAIL AND PASSWORD FROM FORM HERE ***
         # user_email = GET EMAIL FROM HTML
@@ -70,11 +70,12 @@ def home_library_view(request):
 
     request.session['returning_user'] = -1
     song_results = geosound.queries.get_lib()
-    context = {'song_list': song_results }
+    context = {'song_list': song_results}
     return render(request, 'geosound/home_library.html', context)
 
 
 def create_playlist_view(request):
+    request.session['new_playlist'] = 1
     return render(request, 'geosound/create_playlist.html')
 
 
@@ -114,6 +115,9 @@ def select_playlist_to_add_view(request):
 
 
 def select_playlist_to_display_view(request):
+    # call create new playlist, get user's playlist name
+    if request.session['new_playlist'] == 1:
+        pass
     playlists = geosound.queries.get_playlists(request.session['user_id'])
     user_playlists = dict((p.playlist_id, p.playlist_name) for p in playlists)
     context = {'usr_playlists': user_playlists}
