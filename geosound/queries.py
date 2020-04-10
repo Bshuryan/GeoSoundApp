@@ -32,6 +32,14 @@ def play_song(song_id, user_id):
         cursor.close()
 
 
+def play_song_from_playlist(song_id, user_id, playlist_id):
+    cursor = connection.cursor()
+    try:
+        cursor.callproc('play_from_playlist', [song_id, user_id, playlist_id])
+    finally:
+        cursor.close()
+
+
 # returns all playlists associated with the given user id
 def get_playlists(usr_id):
     current_user = User.objects.get(user_id=usr_id)
@@ -61,11 +69,27 @@ def show_songs_in_playlist(playlist_id):
         cursor.close()
 
 
+def add_song_to_playlist(p_id, s_id):
+    cursor = connection.cursor()
+    try:
+        cursor.callproc('add_song_to_playlist', [s_id, p_id])
+    finally:
+        cursor.close()
+
+
 # get user_id from request.session['user_id']
 def create_playlist(user_id, playlist_name):
     cursor = connection.cursor()
     try:
         cursor.callproc('create_playlist', [user_id, playlist_name])
+    finally:
+        cursor.close()
+
+
+def delete_playlist(playlist_id):
+    cursor = connection.cursor()
+    try:
+        cursor.callproc('delete_playlist', [playlist_id])
     finally:
         cursor.close()
 

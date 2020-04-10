@@ -4,6 +4,8 @@ from geosound.login import validate_location
 from geosound.login import create_user
 from geosound.login import validate_user
 import geosound.queries
+from geosound.models import Playlist
+from geosound.models import Song
 from django.shortcuts import redirect
 from .forms import ReturningUserForm
 
@@ -20,10 +22,10 @@ def login_view(request):
     return render(request, 'geosound/login.html')
 
 
-def home_library_view(request):
+def home_library_view(request, origin):
     # returning user logging in - validate email and password
-    if request.session['returning_usr'] == 1:
-        user_email = 'dummy2@gmail.com'
+    if origin == 'returning-user':
+        user_email = 'dummy@gmail.com'
         user_password = 'password'
         # *** GET EMAIL AND PASSWORD FROM FORM HERE ***
         # user_email = GET EMAIL FROM HTML
@@ -39,7 +41,7 @@ def home_library_view(request):
             request.session['user_id'] = user_id
 
     # new user creating an account - validate their location and create a new USER instance
-    else:
+    elif origin == 'new-user':
         pass
         # get information from the fields that the user inputs
         """"
@@ -68,14 +70,21 @@ def home_library_view(request):
             request.session['user_id'] = new_user
             """
 
-    request.session['returning_user'] = -1
+    else:
+        # check if need to delete a playlist
+        try:
+            playlist_id = int(origin)
+            geosound.queries.delete_playlist(playlist_id)
+        # nothing to do
+        except ValueError:
+            pass
+
     song_results = geosound.queries.get_lib()
     context = {'song_list': song_results}
     return render(request, 'geosound/home_library.html', context)
 
 
 def create_playlist_view(request):
-    request.session['new_playlist'] = 1
     return render(request, 'geosound/create_playlist.html')
 
 
@@ -86,18 +95,20 @@ def search_lib_view(request):
 def search_results_view(request):
     # *** error with this line of code below ***
     user_input = request.GET['usr_input']
-
     search_results = geosound.queries.search_library(user_input)
     context = {'song_list': search_results}
     return render(request, 'geosound/search_results.html', context)
 
 
-def playlist_results_view(request):
-    header = '*Insert Playlist Name Here*'
-    # this will be dynamically set
-    playlist_id = 1
+def playlist_results_view(request, playlist_id, song_id):
+    playlist_id = int(playlist_id)
+    song_id = int(song_id)
+    if song_id != 0:
+        geosound.queries.add_song_to_playlist(playlist_id, song_id)
+    playlist_obj = Playlist.objects.get(playlist_id=playlist_id)
+    playlist_title = playlist_obj.playlist_name
     song_results = geosound.queries.show_songs_in_playlist(playlist_id)
-    context = {'song_list': song_results, 'playlist_name': header}
+    context = {'song_list': song_results, 'playlist_name': playlist_title}
     return render(request, 'geosound/playlist_results.html', context)
 
 
@@ -107,18 +118,30 @@ def geosounds_view(request):
     return render(request, 'geosound/geosounds.html', context)
 
 
-def select_playlist_to_add_view(request):
+def select_playlist_to_add_view(request, song_id):
     playlists = geosound.queries.get_playlists(request.session['user_id'])
     user_playlists = dict((p.playlist_id, p.playlist_name) for p in playlists)
-    context = {'usr_playlists': user_playlists}
+    context = {'usr_playlists': user_playlists, 'song_id': song_id}
     return render(request, 'geosound/select_playlist_to_add.html', context)
 
 
-def select_playlist_to_display_view(request):
+def select_playlist_to_display_view(request, origin):
     # call create new playlist, get user's playlist name
-    if request.session['new_playlist'] == 1:
+    if origin == 'from-create':
+        # create playlist here
         pass
+
     playlists = geosound.queries.get_playlists(request.session['user_id'])
     user_playlists = dict((p.playlist_id, p.playlist_name) for p in playlists)
+
     context = {'usr_playlists': user_playlists}
     return render(request, 'geosound/select_playlist_to_display.html', context)
+
+
+def play_song_view(request, song_id):
+    # geosound.queries.play_song(int(song_id), request.session['user_id'])
+    song_obj = Song.objects.get(song_id=song_id)
+    song_name = song_obj.song_name
+    song_artist = song_obj.song_artist
+    context = {'song_name': song_name, 'song_artist': song_artist}
+    return render(request, 'geosound/play_song.html', context)

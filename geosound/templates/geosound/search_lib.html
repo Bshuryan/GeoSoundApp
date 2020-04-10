@@ -22,10 +22,10 @@
             </li> 
             </li> 
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'home-library' %}">Library<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{% url 'home-library' 'base'%}">Library<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'select-playlist-to-display' %}">Playlists</a>
+              <a class="nav-link" href="{% url 'select-playlist-to-display' 'base'%}">Playlists</a>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="">Search</a>
@@ -43,13 +43,11 @@
 <div class="container">
     <form action="{% url 'search-results' %}">
         <div class="form-group">
-          
-          <input type="text" class="form-control" id="playlistName" name="usr_input" placeholder="Search">
+          <input type="text" class="form-control" id="usr_input" name="usr_input" placeholder="Search">
         </div>
-      
-        <center><button type ="button" class="btn btn-primary btn-lg" onclick="location.href='{% url 'search-results' %}'">Search</button></center>
+        <center><a class="btn btn-primary btn-lg" type="submit" style="color:white">Search</a></center>
         <br/>
-        
+
       </form>
 </div>
 </body>

@@ -22,7 +22,7 @@
     <br/>
     <br/>
     <div class="container">
-        <form action= "{% url 'home-library' %}" method="post">
+        <form action= "{% url 'home-library' 'base' %} " method="post">
             <div class="form-group">
               <label for="exampleInputEmail1">Email Address:</label>
               <input type="email" class="form-control" id="exampleInputEmail1" name="usr_email" placeholder="Email">
@@ -32,7 +32,7 @@
               <input type="password" class="form-control" id="exampleInputPassword1" name="usr_password" placeholder="Password">
             </div>
           
-            <center><button type = "button" class="btn btn-primary btn-lg" onclick="location.href='{% url 'home-library' %}'">Login</button></center>
+            <center><button type = "button" class="btn btn-primary btn-lg" onclick="location.href='{% url 'home-library' 'returning-user'%}'">Login</button></center>
             <br/>
             <center><button type = "button" class="btn btn-info btn-sm" onclick="location.href='{% url 'new-user' %}'">Create Account</button></center>
           </form>

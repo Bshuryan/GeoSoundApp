@@ -22,10 +22,10 @@
             </li> 
             </li> 
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'home-library' %}">Library<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{% url 'home-library' 'base'%}">Library<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'select-playlist-to-display' %}">Playlists</a>
+              <a class="nav-link" href="{% url 'select-playlist-to-display' 'base'%}">Playlists</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'search' %}">Search</a>
@@ -51,7 +51,7 @@
         <tbody>
           {% for p_id, playlist_name in usr_playlists.items %}
               <tr>
-                <th scope="row"><button type = "button" class="btn btn-primary btn-xs">Select</button></th>
+                <th scope="row"><a href="{% url 'playlist-results' p_id song_id %}" class="btn btn-primary btn-xs" id={{ p_id }}>Select</a></th>
                 <td>{{playlist_name}}</td>
               </tr>
             {% endfor %}
