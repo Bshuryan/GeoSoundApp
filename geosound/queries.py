@@ -2,14 +2,19 @@ from django.db import connection
 from geosound.models import Song
 from geosound.models import Playlist
 from geosound.models import User
+from songs import SongDisplay
+from songs import sec_to_mins
 
 
 # returns a list with all songs available
 
 
 def get_lib():
+    display_songs = []
     queryset = Song.objects.all()
-    return queryset
+    for obj in queryset:
+        display_songs.append(song_to_display(obj))
+    return display_songs
 
 
 def show_geosounds(usr_id):
@@ -53,7 +58,7 @@ def search_library(user_search):
 
     for instance in entire_lib:
         if user_search.lower() in instance.song_name.lower() or user_search.lower() in instance.song_artist.lower():
-            filtered_songs.append(instance)
+            filtered_songs.append(song_to_display(instance))
     return filtered_songs
 
 
@@ -99,11 +104,15 @@ def song_to_obj(song_lst):
     for s in song_lst:
         s_id = s[0]
         song_match = Song.objects.get(song_id__exact=s_id)
-        obj_list.append(song_match)
+        song_display = song_to_display(song_match)
+        obj_list.append(song_display)
     return obj_list
 
 
-def sec_to_mins(seconds):
-    minutes = str(int(seconds/60))
-    remainder = str(seconds % 60)
-    return minutes + ':' + remainder
+def song_to_display(song_match):
+    return SongDisplay(song_match.song_id, song_match.song_name, song_match.song_artist, song_match.song_genre,
+                       song_match.song_duration)
+
+
+
+

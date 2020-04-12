@@ -55,7 +55,7 @@
         <tbody>
            {% for song in song_list %}
                     <tr>
-                        <th scope="row"><button type = "button" class="btn btn-primary btn-xs">Play</button></th>
+                        <th scope="row"><a href="{% url 'play-song' song.song_id %}" class="btn btn-primary btn-xs" style="color:white">Play</a></th>
                         <td>{{ song.song_name }} </td>
                         <td>{{ song.song_artist }}</td>
                         <td>{{song.song_genre}}</td>
