@@ -22,17 +22,16 @@
     <br/>
     <br/>
     <div class="container">
-        <form action= "{% url 'home-library' 'base' %} " method="post">
+        <form action= "{% url 'home-library' 'returning-user' %} ">
             <div class="form-group">
-              <label for="exampleInputEmail1">Email Address:</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" name="usr_email" placeholder="Email">
+              <label for="inputEmail">Email Address:</label>
+              <input type="email" class="form-control" id="inputEmail" name="usr_email" placeholder="Email">
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Password:</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" name="usr_password" placeholder="Password">
+              <label for="inputPassword">Password:</label>
+              <input type="password" class="form-control" id="inputPassword" name="usr_password" placeholder="Password">
             </div>
-          
-            <center><button type = "button" class="btn btn-primary btn-lg" onclick="location.href='{% url 'home-library' 'returning-user'%}'">Login</button></center>
+            <center><input type = "submit" class="btn btn-primary btn-lg" onclick="location.href='{% url 'home-library' 'returning-user'%}'" value="Login"></center>
             <br/>
             <center><button type = "button" class="btn btn-info btn-sm" onclick="location.href='{% url 'new-user' %}'">Create Account</button></center>
           </form>

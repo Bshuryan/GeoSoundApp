@@ -7,8 +7,6 @@ from songs import sec_to_mins
 
 
 # returns a list with all songs available
-
-
 def get_lib():
     display_songs = []
     queryset = Song.objects.all()
@@ -17,6 +15,7 @@ def get_lib():
     return display_songs
 
 
+# calls show_geosounds database stored procedure
 def show_geosounds(usr_id):
     cursor = connection.cursor()
     try:
@@ -28,7 +27,7 @@ def show_geosounds(usr_id):
     finally:
         cursor.close()
 
-
+# calls play stored procedure
 def play_song(song_id, user_id):
     cursor = connection.cursor()
     try:
@@ -37,6 +36,7 @@ def play_song(song_id, user_id):
         cursor.close()
 
 
+# calls play_from_playlist stored procedure
 def play_song_from_playlist(song_id, user_id, playlist_id):
     cursor = connection.cursor()
     try:
@@ -52,6 +52,7 @@ def get_playlists(usr_id):
     return playlists
 
 
+# returns all records in SONG table where either the song artist or song name matches input provided by the user
 def search_library(user_search):
     entire_lib = get_lib()
     filtered_songs = []
@@ -62,6 +63,7 @@ def search_library(user_search):
     return filtered_songs
 
 
+# calls show_songs_in_playlist stored procedure
 def show_songs_in_playlist(playlist_id):
     cursor = connection.cursor()
     try:
@@ -74,6 +76,7 @@ def show_songs_in_playlist(playlist_id):
         cursor.close()
 
 
+# calls add_song_to_playlist stored procedure
 def add_song_to_playlist(p_id, s_id):
     cursor = connection.cursor()
     try:
@@ -82,7 +85,7 @@ def add_song_to_playlist(p_id, s_id):
         cursor.close()
 
 
-# get user_id from request.session['user_id']
+# calls create_playlist stored procedure from database
 def create_playlist(user_id, playlist_name):
     cursor = connection.cursor()
     try:
@@ -91,6 +94,7 @@ def create_playlist(user_id, playlist_name):
         cursor.close()
 
 
+# calls delete_playlist stored procedure
 def delete_playlist(playlist_id):
     cursor = connection.cursor()
     try:
@@ -99,6 +103,7 @@ def delete_playlist(playlist_id):
         cursor.close()
 
 
+# converts list of songs in array form to list of SONG objects
 def song_to_obj(song_lst):
     obj_list = []
     for s in song_lst:
@@ -109,6 +114,7 @@ def song_to_obj(song_lst):
     return obj_list
 
 
+# converts SONG object to SongDisplay object, which modifies data for visual purposes
 def song_to_display(song_match):
     return SongDisplay(song_match.song_id, song_match.song_name, song_match.song_artist, song_match.song_genre,
                        song_match.song_duration)

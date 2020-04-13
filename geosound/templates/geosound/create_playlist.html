@@ -41,13 +41,12 @@
 
 </br>
 <div class="container">
-    <form>
+    <form action="{% url 'select-playlist-to-display' 'from-create' %}">
         <div class="form-group">
-          
-          <input type="text" class="form-control" id="playlistName" placeholder="Playlist Name">
+          <input type="text" name = "playlist_name" class="form-control" id="playlistName" placeholder="Playlist Name">
         </div>
       
-        <center><button type = "button" class="btn btn-primary btn-lg">Create Playlist</button></center>
+        <center><input type = "submit" class="btn btn-primary btn-lg" onclick="location.href='{% url 'select-playlist-to-display' 'from-create'%}'" value="Create Playlist"></center>
         <br/>
         
       </form>
